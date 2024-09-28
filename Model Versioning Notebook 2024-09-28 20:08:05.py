@@ -252,3 +252,20 @@ importances_df = spark.createDataFrame(
 # Display the top-3 features with their importances
 top_features = importances_df.orderBy(col("Importance").desc()).limit(3)
 display(top_features)
+
+# COMMAND ----------
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Convert the feature importances DataFrame to Pandas for plotting
+importances_pd = importances_df.toPandas()
+
+# Plot feature importances with logarithmic scale
+plt.figure(figsize=(10, 6))
+plt.barh(importances_pd['Feature'], np.log1p(importances_pd['Importance']), color='skyblue')
+plt.xlabel('Log(Importance)')
+plt.ylabel('Feature')
+plt.title('Feature Importances (Logarithmic Scale)')
+plt.gca().invert_yaxis()
+plt.show()
